@@ -4,12 +4,12 @@
     const ctx = canvas.getContext("2d");
     const TAMANIO_CELDA = 22;
     const serpiente = [
-      {x:6,y:7},
       {x:7,y:7},
-      {x:7,y:8},
-      {x:8,y:8},
-      {x:8,y:9},
-      {x:8,y:10}
+      {x:6,y:7},
+      {x:5,y:7},
+      {x:4,y:7},
+      {x:4,y:8},
+      {x:4,y:9}
 
     ];
 
@@ -29,6 +29,8 @@
     function dibujarTodo() {
       limpiarCanvas();
       dibujarTablero();
+
+      
       
       pintarSerpiente();
 
@@ -87,4 +89,77 @@
       
       
     }
+    function moverDerecha() {
+      // 1. Obtener la posición de la cabeza actual
+      let cabezaActual = serpiente[0];
 
+      // 2. Crear un nuevo objeto ubicado una celda a la derecha (sumamos 1 a x)
+      let nuevaCabeza = { x: cabezaActual.x + 1, y: cabezaActual.y };
+
+      // 3. Agregar este nuevo objeto al inicio del arreglo utilizando unshift()
+      serpiente.unshift(nuevaCabeza);
+
+      // 4. Eliminar el último elemento del arreglo utilizando pop() para simular el movimiento
+      serpiente.pop();
+    }
+    function cambiarDireccion(direccion){
+      if(direccion === "derecha"){
+        moverDerecha();
+        pintarSerpiente();
+
+      }
+      else if(direccion === "izquierda"){
+        moverIzquierda();
+        pintarSerpiente();
+      }
+      else if(direccion === "arriba"){
+        moverArriba();
+        pintarSerpiente();
+        
+      }
+      else if (direccion === "abajo"){
+        moverAbajo();
+        pintarSerpiente();
+
+      }
+
+    }
+    function moverIzquierda() {
+      // 1. Obtener la posición de la cabeza actual
+      let cabezaActual = serpiente[0];
+
+      // 2. Crear un nuevo objeto ubicado una celda a la derecha (sumamos 1 a x)
+      let nuevaCabeza = { x: cabezaActual.x - 1, y: cabezaActual.y };
+
+      // 3. Agregar este nuevo objeto al inicio del arreglo utilizando unshift()
+      serpiente.unshift(nuevaCabeza);
+
+      // 4. Eliminar el último elemento del arreglo utilizando pop() para simular el movimiento
+      serpiente.pop();
+    }
+    function moverArriba() {
+      // 1. Obtener la posición de la cabeza actual
+      let cabezaActual = serpiente[0];
+
+      // 2. Crear un nuevo objeto ubicado una celda a la derecha (sumamos 1 a x)
+      let nuevaCabeza = { x: cabezaActual.x , y: cabezaActual.y - 1 };
+
+      // 3. Agregar este nuevo objeto al inicio del arreglo utilizando unshift()
+      serpiente.unshift(nuevaCabeza);
+
+      // 4. Eliminar el último elemento del arreglo utilizando pop() para simular el movimiento
+      serpiente.pop();
+    }
+    function moverAbajo() {
+      // 1. Obtener la posición de la cabeza actual
+      let cabezaActual = serpiente[0];
+
+      // 2. Crear un nuevo objeto ubicado una celda a la derecha (sumamos 1 a x)
+      let nuevaCabeza = { x: cabezaActual.x, y: cabezaActual.y + 1 };
+
+      // 3. Agregar este nuevo objeto al inicio del arreglo utilizando unshift()
+      serpiente.unshift(nuevaCabeza);
+
+      // 4. Eliminar el último elemento del arreglo utilizando pop() para simular el movimiento
+      serpiente.pop();
+    }
