@@ -4,10 +4,11 @@
     const ctx = canvas.getContext("2d");
     const TAMANIO_CELDA = 22;
     const serpiente = [
-      {x:13,y:13},
-      {x:12,y:13},
-      {x:11,y:13},
-      {x:13,y:14}
+      {x:0,y:6},
+      {x:0,y:7},
+      {x:0,y:8},
+      {x:0,y:9},
+      {x:0,y:10}
 
     ];
 
