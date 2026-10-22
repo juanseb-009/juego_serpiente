@@ -20,6 +20,13 @@
     function dibujarTodo() {
       limpiarCanvas();
       dibujarTablero();
+      pintarParte(5,5);
+      pintarParte(10,2);
+      pintarParte(5,26.3);
+      pintarParte(26.3,20);
+      pintarParte(0,8);
+      pintarParte(26.3,0);
+
 
 
 
@@ -42,6 +49,19 @@
         ctx.lineTo(canvas.width, y);
         ctx.stroke();
       }
+    }
+    function pintarParte(lineaX, lineaY){
+      let x = lineaX * TAMANIO_CELDA;
+      let y = lineaY * TAMANIO_CELDA;
+
+      // Paso 2: Configurar color de relleno y pintar el cuadrado
+      ctx.fillStyle = "#22c55e";
+      ctx.fillRect(x, y, TAMANIO_CELDA, TAMANIO_CELDA);
+
+      // Paso 3: Configurar color del borde y dibujar el borde
+      ctx.strokeStyle = "#000000";
+      ctx.strokeRect(x, y, TAMANIO_CELDA, TAMANIO_CELDA);
+
     }
 
 
