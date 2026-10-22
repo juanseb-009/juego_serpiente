@@ -4,11 +4,12 @@
     const ctx = canvas.getContext("2d");
     const TAMANIO_CELDA = 22;
     const serpiente = [
-      {x:0,y:6},
-      {x:0,y:7},
-      {x:0,y:8},
-      {x:0,y:9},
-      {x:0,y:10}
+      {x:6,y:7},
+      {x:7,y:7},
+      {x:7,y:8},
+      {x:8,y:8},
+      {x:8,y:9},
+      {x:8,y:10}
 
     ];
 
@@ -59,7 +60,7 @@
       let y = lineaY * TAMANIO_CELDA;
 
       // Paso 2: Configurar color de relleno y pintar el cuadrado
-      ctx.fillStyle = "#22c55e";
+      
       ctx.fillRect(x, y, TAMANIO_CELDA, TAMANIO_CELDA);
 
       // Paso 3: Configurar color del borde y dibujar el borde
@@ -71,7 +72,19 @@
     function pintarSerpiente(){
       for (let i = 0; i < serpiente.length; i++) {
         let parte = serpiente[i];
-        pintarParte(parte.x, parte.y);
+        
+
+        if(i === 0){
+        ctx.fillStyle = "rgb(1, 179, 255)";
+
       }
+      else{
+         ctx.fillStyle = "#22c55e";
+      }
+
+      pintarParte(parte.x, parte.y);
+      }
+      
+      
     }
 
