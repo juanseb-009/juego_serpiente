@@ -21,6 +21,7 @@ const filas = canvas.height / TAMANIO_CELDA;
 // Objeto para guardar la posición actual de la comida
 let comida = { x: 0, y: 0 };
 let puntaje = 0;
+let juegoTerminado = false;
 
 // Primera pintura del juego al cargar la página
 generarComida();
@@ -157,6 +158,10 @@ function cambiarDireccion(direccion) {
 }
 
 function moverSerpiente() {
+  if (juegoTerminado) {
+    return;
+  }
+
   // Comprobar si la cabeza está en la comida
   let comio = atrapaComida();
 
@@ -173,23 +178,49 @@ function moverSerpiente() {
     moverAbajo(comio);
   }
 
+  // Comprobar si la cabeza salió del tablero
+  let cabeza = serpiente[0];
+
+  if (
+    cabeza.x < 0 ||
+    cabeza.x >= columnas ||
+    cabeza.y < 0 ||
+    cabeza.y >= filas
+  ) {
+    juegoTerminado = true;
+
+    clearInterval(intervaloSerpiente);
+    intervaloSerpiente = null;
+
+    document.getElementById("estado").textContent = "GAME OVER";
+    document.getElementById("mensaje").textContent =
+      "¡Fin del juego! Presiona Reiniciar para jugar otra vez.";
+
+    return;
+  }
+
+  // Actualizar el puntaje y la comida
   if (comio) {
     puntaje += 10;
+
     document.getElementById("puntaje").textContent = puntaje;
+
     console.log("Puntaje:", puntaje);
 
     generarComida();
   }
 
-  // Actualizar el dibujo después del movimiento
+  // Actualizar el tablero
   dibujarTodo();
 }
-
 // =========================
 // INICIAR Y PAUSAR EL JUEGO
 // =========================
 
 function iniciarJuego() {
+  if(juegoTerminado){
+    return;
+  }
   generarComida();
 
   if (intervaloSerpiente !== null) {
