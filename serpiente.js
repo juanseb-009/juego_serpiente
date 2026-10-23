@@ -16,6 +16,11 @@
 
     let intervaloSerpiente = null;
     let direccionActual = "derecha";
+    const columnas = canvas.width / TAMANIO_CELDA;
+    const filas = canvas.height / TAMANIO_CELDA;
+
+    // Objeto para guardar la posición actual de la comida
+    let comida = { x: 0, y: 0 };
 
     // Primera pintura del juego al cargar la página
     dibujarTodo();
@@ -31,7 +36,9 @@
     function dibujarTodo() {
       limpiarCanvas();
       dibujarTablero();
+      pintarComida();
       pintarSerpiente();
+      
     }
 
     function dibujarTablero() {
@@ -157,6 +164,10 @@
       }
 
       dibujarTodo();
+      if (atrapaComida()) {
+        generarComida();
+  
+      }
     }
 
     // =========================
@@ -164,6 +175,7 @@
     // =========================
 
     function iniciarJuego() {
+      generarComida();
       if (intervaloSerpiente !== null) {
         return;
       }
@@ -183,3 +195,28 @@
       document.getElementById("mensaje").textContent =
         "Juego pausado. Presiona Iniciar para continuar.";
     }
+    function pintarComida() {
+      let x = comida.x * TAMANIO_CELDA;
+      let y = comida.y * TAMANIO_CELDA;
+
+      ctx.fillStyle = "#ef4444"; // Color rojo
+      ctx.fillRect(x, y, TAMANIO_CELDA, TAMANIO_CELDA);
+      ctx.strokeStyle = "#000000";
+      ctx.strokeRect(x, y, TAMANIO_CELDA, TAMANIO_CELDA);
+    }
+
+    function atrapaComida() {
+  // Obtenemos la posición actual de la cabeza (el primer elemento del arreglo)
+  let cabeza = serpiente[0];
+
+  // Comparamos las coordenadas X e Y de la cabeza con las de la comida
+  if (cabeza.x === comida.x && cabeza.y === comida.y) {
+    return true;  // Sí la atrapó
+  }
+  
+  return false;   // No la ha atrapado
+}
+function generarComida() {
+  comida.x = Math.floor(Math.random() * columnas);
+  comida.y = Math.floor(Math.random() * filas);
+}
