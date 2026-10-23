@@ -1,5 +1,5 @@
 
- // 1. Capturamos el canvas y su contexto de dibujo
+// 1. Capturamos el canvas y su contexto de dibujo
 const canvas = document.getElementById("canvasJuego");
 const ctx = canvas.getContext("2d");
 const TAMANIO_CELDA = 22;
@@ -15,13 +15,14 @@ const serpiente = [
 
 let intervaloSerpiente = null;
 let direccionActual = "derecha";
-const columnas = canvas.width / TAMANIO_CELDA;
-const filas = canvas.height / TAMANIO_CELDA;
+let juegoTerminado = false;
+
+const columnas = Math.floor(canvas.width / TAMANIO_CELDA);
+const filas = Math.floor(canvas.height / TAMANIO_CELDA);
 
 // Objeto para guardar la posición actual de la comida
 let comida = { x: 0, y: 0 };
 let puntaje = 0;
-let juegoTerminado = false;
 
 // Primera pintura del juego al cargar la página
 generarComida();
@@ -158,6 +159,7 @@ function cambiarDireccion(direccion) {
 }
 
 function moverSerpiente() {
+  // Si el juego terminó, no continuar
   if (juegoTerminado) {
     return;
   }
@@ -178,7 +180,7 @@ function moverSerpiente() {
     moverAbajo(comio);
   }
 
-  // Comprobar si la cabeza salió del tablero
+  // Comprobar si la serpiente salió del tablero
   let cabeza = serpiente[0];
 
   if (
@@ -199,28 +201,28 @@ function moverSerpiente() {
     return;
   }
 
-  // Actualizar el puntaje y la comida
+  // Sumar puntos cuando come
   if (comio) {
     puntaje += 10;
-
     document.getElementById("puntaje").textContent = puntaje;
-
     console.log("Puntaje:", puntaje);
 
     generarComida();
   }
 
-  // Actualizar el tablero
+  // Actualizar el dibujo después del movimiento
   dibujarTodo();
 }
+
 // =========================
-// INICIAR Y PAUSAR EL JUEGO
+// INICIAR, PAUSAR Y REINICIAR
 // =========================
 
 function iniciarJuego() {
-  if(juegoTerminado){
+  if (juegoTerminado) {
     return;
   }
+
   generarComida();
 
   if (intervaloSerpiente !== null) {
@@ -238,9 +240,46 @@ function pausarJuego() {
   clearInterval(intervaloSerpiente);
   intervaloSerpiente = null;
 
-  document.getElementById("estado").textContent = "Pausado";
+  if (!juegoTerminado) {
+    document.getElementById("estado").textContent = "Pausado";
+    document.getElementById("mensaje").textContent =
+      "Juego pausado. Presiona Iniciar para continuar.";
+  }
+}
+
+function reiniciarJuego() {
+  // Detener el movimiento actual
+  clearInterval(intervaloSerpiente);
+  intervaloSerpiente = null;
+
+  // Restaurar la posición inicial de la serpiente
+  serpiente.splice(0, serpiente.length);
+
+  serpiente.push(
+    {x:7,y:7},
+    {x:6,y:7},
+    {x:5,y:7},
+    {x:4,y:7},
+    {x:4,y:8},
+    {x:4,y:9}
+  );
+
+  // Restaurar la dirección y el estado del juego
+  direccionActual = "derecha";
+  juegoTerminado = false;
+
+  // Reiniciar el puntaje
+  puntaje = 0;
+  document.getElementById("puntaje").textContent = puntaje;
+
+  // Actualizar los mensajes
+  document.getElementById("estado").textContent = "Listo";
   document.getElementById("mensaje").textContent =
-    "Juego pausado. Presiona Iniciar para continuar.";
+    "Presiona iniciar para comenzar.";
+
+  // Generar comida nueva y dibujar el juego
+  generarComida();
+  dibujarTodo();
 }
 
 // =========================
