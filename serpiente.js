@@ -16,6 +16,7 @@ const serpiente = [
 let intervaloSerpiente = null;
 let direccionActual = "derecha";
 let juegoTerminado = false;
+let velocidad = 300;
 
 const columnas = Math.floor(canvas.width / TAMANIO_CELDA);
 const filas = Math.floor(canvas.height / TAMANIO_CELDA);
@@ -23,6 +24,7 @@ const filas = Math.floor(canvas.height / TAMANIO_CELDA);
 // Objeto para guardar la posición actual de la comida
 let comida = { x: 0, y: 0 };
 let puntaje = 0;
+let comidas = 0;
 
 // Primera pintura del juego al cargar la página
 generarComida();
@@ -155,6 +157,15 @@ function moverAbajo(crecer = false) {
 }
 
 function cambiarDireccion(direccion) {
+   if (
+    (direccionActual === "derecha" && direccion === "izquierda") ||
+    (direccionActual === "izquierda" && direccion === "derecha") ||
+    (direccionActual === "arriba" && direccion === "abajo") ||
+    (direccionActual === "abajo" && direccion === "arriba")
+  ) {
+    return;
+  }
+
   direccionActual = direccion;
 }
 
@@ -206,6 +217,14 @@ function moverSerpiente() {
     puntaje += 10;
     document.getElementById("puntaje").textContent = puntaje;
     console.log("Puntaje:", puntaje);
+    console.log("Comidas:",comidas);
+
+  if (comida % 5 === 0){
+    velocidad -= 50;
+
+    clearInterval(intervaloSerpiente);
+    intervaloSerpiente = setInterval(moverSerpiente, velocidad);
+  }
 
     generarComida();
   }
@@ -229,7 +248,7 @@ function iniciarJuego() {
     return;
   }
 
-  intervaloSerpiente = setInterval(moverSerpiente, 200);
+  intervaloSerpiente = setInterval(moverSerpiente, velocidad);
 
   document.getElementById("estado").textContent = "Jugando";
   document.getElementById("mensaje").textContent =
@@ -270,6 +289,8 @@ function reiniciarJuego() {
 
   // Reiniciar el puntaje
   puntaje = 0;
+  comidas = 0;
+  velocidad = 300;
   document.getElementById("puntaje").textContent = puntaje;
 
   // Actualizar los mensajes
