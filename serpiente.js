@@ -215,6 +215,7 @@ function moverSerpiente() {
   // Sumar puntos cuando come
   if (comio) {
     puntaje += 10;
+    comidas++;
     document.getElementById("puntaje").textContent = puntaje;
     console.log("Puntaje:", puntaje);
     console.log("Comidas:",comidas);
